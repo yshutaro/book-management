@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: book.management
+---
+testFramework: spek
+sourceLanguage: kotlin
