@@ -5,6 +5,7 @@
     <title>書籍一覧</title>
 </head>
 <body>
+<p th:if="${books.isEmpty()}">書籍の登録はありません。</p>
 <ul th:unless="${books.isEmpty()}">
     <li th:each="book:${books}">
         <span th:text="${book.name}"></span>

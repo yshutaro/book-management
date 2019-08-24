@@ -7,15 +7,16 @@ import io.micronaut.http.HttpResponse
 import io.micronaut.views.*
 
 @Controller("/books")
-class BooksController {
+class BooksController(private val bookRepository: BookRepository) {
 
     @View("index")
     @Get("/")
     fun index(): HttpResponse<Map<String, List<Book>>> {
-        val books = listOf(
-                Book(1, "FACT FULLNESS", "ハンズ・ロスリング", "日経BP"),
-                Book(2, "三体", "劉 慈欣", "早川書房")
-        )
+//        val books = listOf(
+//                Book(1, "FACT FULLNESS", "ハンズ・ロスリング", "日経BP"),
+//                Book(2, "三体", "劉 慈欣", "早川書房")
+//        )
+        val books = bookRepository.findAll()
         return HttpResponse.ok(mapOf("books" to books))
     }
 }
