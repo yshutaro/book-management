@@ -29,14 +29,17 @@ class BooksController(private val bookRepository: BookRepository) {
 
     @Post("/", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
 //    fun create(@Body form:BookCreateForm): HttpResponse<BookCreateForm> {
-    fun create(name: String, author: String, publisher: String): HttpResponse<Map<String, BookCreateForm>> {
+//    fun create(name: String, author: String, publisher: String): HttpResponse<Map<String, BookCreateForm>> {
+    fun create(name: String, author: String, publisher: String): HttpResponse<String> {
 //        val name = requireNotNull(form.name)
 //        val author = requireNotNull(form.author)
 //        val publisher = requireNotNull(form.publisher)
         bookRepository.create(name, author, publisher)
 //        return HttpResponse.created(form);
         val form = BookCreateForm()
-        return HttpResponse.ok(mapOf("bookCreateForm" to form))
+//        return HttpResponse.ok(mapOf("bookCreateForm" to form))
+        val location = java.net.URI("/books")
+        return HttpResponse.redirect(location)
     }
 
 }
