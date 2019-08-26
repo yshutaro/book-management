@@ -10,8 +10,10 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.views.View
-//import org.hibernate.validator.*
+import io.micronaut.validation.Validated
+import javax.validation.Valid
 
+@Validated
 @Controller("/books")
 class BooksController(private val bookRepository: BookRepository) {
 
@@ -31,7 +33,7 @@ class BooksController(private val bookRepository: BookRepository) {
     }
 
     @Post("/", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
-    fun create(@Body form:BookForm): HttpResponse<String> {
+    fun create(@Body @Valid form:BookForm): HttpResponse<String> {
         val name = requireNotNull(form.name)
         val author = requireNotNull(form.author)
         val publisher = requireNotNull(form.publisher)
@@ -53,7 +55,7 @@ class BooksController(private val bookRepository: BookRepository) {
 
 //    @Patch("{id}")
     @Post("{id}", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
-    fun update(@PathVariable("id") id:Long, @Body form:BookForm): HttpResponse<String> {
+    fun update(@PathVariable("id") id:Long, @Body @Valid form:BookForm): HttpResponse<String> {
         val book = bookRepository.findById(id) ?: throw NotFoundException()
 
         val newBook = book.copy(name = requireNotNull(form.name),

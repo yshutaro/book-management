@@ -8,12 +8,17 @@
 <form th:method="post" th:action="@{./}" th:object="${bookForm}" >
     <div>
         <label>
-            <!--書籍名: <input type="text" th:field="*{name}" />-->
             書籍名: <input type="text" id="name" name="name" />
             著者名: <input type="text" id="author" name="author" />
             出版社: <input type="text" id="publisher" name="publisher" />
         </label>
-        <!--<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">エラーメッセージ</p>-->
+        <!--<p th:if="${#fields.hasErrors('name')}" th:errors="${bookForm.name}">エラーメッセージ</p>-->
+        <ul th:if="${errors}">
+            エラーメッセージ
+            <li th:each="${errors}">
+                <span th:text="${errors.message}"></span>
+            </li>
+        </ul>
     </div>
     <div>
         <input type="submit" value="登録" />
