@@ -24,7 +24,13 @@ class InMemoryBookRepository : BookRepository {
         }
     }
 
+    override fun delete(id: Long) {
+        books.toList().forEach {
+            if (it.id == id) books.remove(it)
+        }
+    }
+
     override fun findAll(): List<Book> = books.toList()
 
-    override fun findById(id: Long): Book? = books.find { it.id == id}
+    override fun findById(id: Long): Book? = books.find { it.id == id }
 }

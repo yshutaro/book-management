@@ -6,6 +6,8 @@ interface BookRepository {
 
     fun update(book: Book)
 
+    fun delete(id: Long)
+
     fun findAll(): List<Book>
 
     fun findById(id: Long): Book?

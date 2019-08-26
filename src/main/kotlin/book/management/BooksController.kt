@@ -64,4 +64,12 @@ class BooksController(private val bookRepository: BookRepository) {
         return HttpResponse.redirect(location)
     }
 
+    @Get("{id}/delete")
+    fun delete(@PathVariable("id") id: Long): HttpResponse<String> {
+        val book = bookRepository.findById(id) ?: throw NotFoundException()
+        bookRepository.delete(book.id)
+        val location = java.net.URI("/books")
+        return HttpResponse.redirect(location)
+    }
+
 }
