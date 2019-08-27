@@ -9,9 +9,14 @@
 <p th:if="${books.isEmpty()}">書籍の登録はありません。</p>
 <ul th:unless="${books.isEmpty()}">
     <li th:each="book:${books}">
-        <span th:text="${book.name}"></span>
-        <span th:text="${book.author}"></span>
-        <span th:text="${book.publisher}"></span>
+        <a th:href="@{books/{id}/edit(id=${book.id})}">
+            <span th:text="${book.name}"></span>
+            <span th:text="${book.author}"></span>
+            <span th:text="${book.publisher}"></span>
+        </a>
+        <a th:href="@{books/{id}/delete(id=${book.id})}">
+            削除
+        </a>
     </li>
 </ul>
 </body>
