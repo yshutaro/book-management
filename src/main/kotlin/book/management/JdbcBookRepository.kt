@@ -18,6 +18,7 @@ class JdbcBookRepository(@param:CurrentSession @field:PersistenceContext
                           private val entityManager: EntityManager,
                          private val applicationConfiguration: ApplicationConfiguration) : BookRepository {
 
+    /*
 //    @Override
 //    @Transactional
      override fun create(@NotBlank name: String, @NotBlank author: String, @NotBlank publisher: String): Book {
@@ -67,6 +68,7 @@ class JdbcBookRepository(@param:CurrentSession @field:PersistenceContext
     override fun findById(@NotNull id: Long): Optional<Book> {
         return Optional.ofNullable(entityManager.find(Book::class.java, id))
     }
+    */
 
 
 
@@ -74,4 +76,32 @@ class JdbcBookRepository(@param:CurrentSession @field:PersistenceContext
 //
 //        private val VALID_PROPERTY_NAMES = Arrays.asList("id", "name")
 //    }
+    private val books: MutableList<Book> = mutableListOf()
+
+    private val maxId: Long
+        get() = books.map(Book::id).max() ?:0
+
+    override fun create(name: String, author: String, publisher: String): Book {
+        val id = maxId + 1
+        val book = Book(id, name, author, publisher)
+        books += book
+        return book
+    }
+
+    override fun update(book: Book) {
+        books.replaceAll { t ->
+            if (t.id == book.id) book
+            else t
+        }
+    }
+
+    override fun delete(id: Long) {
+        books.toList().forEach {
+            if (it.id == id) books.remove(it)
+        }
+    }
+
+    override fun findAll(): List<Book> = books.toList()
+
+    override fun findById(id: Long): Book? = books.find { it.id == id }
 }
