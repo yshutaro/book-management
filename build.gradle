@@ -44,6 +44,9 @@ dependencies {
     compile 'io.micronaut:micronaut-views'
     runtime 'org.thymeleaf:thymeleaf:3.0.11.RELEASE'
     compile "io.micronaut.configuration:micronaut-hibernate-validator"
+    compile "io.micronaut.configuration:micronaut-hibernate-jpa"
+    compile "io.micronaut.configuration:micronaut-jdbc-hikari"
+    runtime "com.h2database:h2"
 }
 
 test.classpath += configurations.developmentOnly
