@@ -9,9 +9,10 @@ import javax.inject.Singleton
 import javax.sql.DataSource
 
 @Factory
+//@Singleton
 class JdbcTemplateFactory {
     @Inject
-    lateinit var dataSource: DataSource
+    private var dataSource: DataSource? = null
 
     @Bean
     @Singleton

@@ -13,7 +13,7 @@ micronaut:
   datasources:
       default:
           url: jdbc:sqlite:book.db
-            driverClassName: org.sqlite.JDBC
+          driverClassName: org.sqlite.JDBC
 #  jpa:
 #      default:
 #          packages-to-scan:
