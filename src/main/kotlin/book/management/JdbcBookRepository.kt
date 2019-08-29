@@ -1,6 +1,5 @@
 package book.management
 
-//import example.micronaut.domain.Genre
 import io.micronaut.configuration.hibernate.jpa.scope.CurrentSession
 import io.micronaut.spring.tx.annotation.Transactional
 
@@ -23,11 +22,13 @@ class JdbcBookRepository(@param:CurrentSession @field:PersistenceContext
 //    @Transactional
      override fun create(@NotBlank name: String, @NotBlank author: String, @NotBlank publisher: String): Book {
         entityManager.createQuery("INSERT INTO book(:name, :author, :publisher")
-                .setParameter("name", book.name)
-                .setParameter("author", book.author)
-                .setParameter("publisher", book.publisher)
+                .setParameter("name", name)
+                .setParameter("author", author)
+                .setParameter("publisher", publisher)
+                .getResultList()
 
-        val id =
+        val id = entityManager.createQuery("SELECT last_insert_id() FROM book")
+                .getResultList()
         return Book(id, name, author, publisher)
     }
 
