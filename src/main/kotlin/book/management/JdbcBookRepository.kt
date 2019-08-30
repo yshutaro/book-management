@@ -3,20 +3,27 @@ package book.management
 import io.micronaut.context.annotation.Requires
 import javax.inject.Singleton
 import org.springframework.jdbc.core.JdbcTemplate
+import book.management.service.TestService
 import org.springframework.jdbc.core.RowMapper
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import org.springframework.stereotype.Repository
+import javax.inject.Inject
 
-
+//class JdbcBookRepository(private val jdbcTemplate: JdbcTemplate) : BookRepository {
+//@Repository
 @Singleton
-class JdbcBookRepository(private val jdbcTemplate: JdbcTemplate) : BookRepository {
-
-    private val books: MutableList<Book> = mutableListOf()
+class JdbcBookRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) : BookRepository {
 
     private val rowMapper = RowMapper<Book> { rs, _ ->
-        Book(rs.getLong("id"),
+        Book(
+                rs.getLong("id"),
                 rs.getString("name"),
                 rs.getString("author"),
-                rs.getString("publisher"))
+                rs.getString("publisher")
+                )
     }
+
+    private val books: MutableList<Book> = mutableListOf()
 
     private val maxId: Long
         get() = books.map(Book::id).max() ?:0
@@ -42,7 +49,9 @@ class JdbcBookRepository(private val jdbcTemplate: JdbcTemplate) : BookRepositor
     }
 
     override fun findAll(): List<Book> =
-        jdbcTemplate.query("SELECT id, name, author, publisher FROM books", rowMapper)
+            jdbcTemplate.query("SELECT id, name, author, publisher FROM books", rowMapper)
+//    override fun findAll(): List<Book> = books.toList()
 
     override fun findById(id: Long): Book? = books.find { it.id == id }
+
 }
