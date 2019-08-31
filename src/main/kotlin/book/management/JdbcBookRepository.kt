@@ -76,5 +76,4 @@ class JdbcBookRepository(private val jdbcTemplate: JdbcTemplate) : BookRepositor
             return jdbcTemplate.query(query, rowMapper)
         }
     }
-
 }
