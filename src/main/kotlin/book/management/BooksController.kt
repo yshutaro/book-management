@@ -74,4 +74,23 @@ class BooksController(private val bookRepository: BookRepository) {
         return HttpResponse.redirect(location)
     }
 
+    @View("search")
+    @Get("/search")
+    fun search(): HttpResponse<Map<String, List<Book>>> {
+        val books = listOf<Book>()
+        return HttpResponse.ok(mapOf("books" to books))
+    }
+
+    @View("search")
+    @Post("/search", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
+    fun searchbooks(@Body form:BookForm): HttpResponse<Map<String, List<Book>>> {
+
+        print("form.name :" + form.name)
+        print("form.author :" + form.author)
+        print("form.publisher :" + form.publisher)
+
+        val books = bookRepository.search(form.name ?: "", form.author ?: "", form.publisher ?: "")
+        return HttpResponse.ok(mapOf("books" to books))
+    }
+
 }

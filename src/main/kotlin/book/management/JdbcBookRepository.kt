@@ -45,4 +45,36 @@ class JdbcBookRepository(private val jdbcTemplate: JdbcTemplate) : BookRepositor
             jdbcTemplate.query("SELECT id, name, author, publisher FROM books WHERE id = ?",
                     rowMapper, id).firstOrNull()
 
+    override fun search(name: String, author: String, publisher: String): List<Book> {
+
+        // TODO もっとシンプルに書ける方法があれば書き直す。
+        var query = "SELECT id, name, author, publisher FROM books"
+        if( name.isBlank() && author.isBlank() && publisher.isBlank() ){
+            return jdbcTemplate.query(query, rowMapper)
+        } else if (name.isNotBlank() && author.isBlank() && publisher.isBlank()) {
+            return jdbcTemplate.query("$query WHERE name like ?", rowMapper,
+                    "%$name%")
+        } else if (name.isBlank() && author.isNotBlank() && publisher.isBlank()) {
+            return jdbcTemplate.query("$query WHERE author like ?", rowMapper,
+                    "%$author%")
+        } else if (name.isBlank() && author.isBlank() && publisher.isNotBlank()) {
+            return jdbcTemplate.query("$query WHERE publisher like ?", rowMapper,
+                    "%$publisher%")
+        } else if (name.isNotBlank() && author.isNotBlank() && publisher.isBlank()) {
+            return jdbcTemplate.query("$query WHERE name like ? AND author like ?",
+                    rowMapper, "%$name%", "%$author%")
+        } else if (name.isNotBlank() && author.isBlank() && publisher.isNotBlank()) {
+            return jdbcTemplate.query("$query WHERE name like ? AND publisher like ?",
+                    rowMapper, "%$name%", "%$publisher%")
+        } else if (name.isBlank() && author.isNotBlank() && publisher.isNotBlank()) {
+            return jdbcTemplate.query("$query WHERE author like ? AND publisher like ?",
+                rowMapper, "%$author%", "%$publisher%")
+        } else if (name.isNotBlank() && author.isNotBlank() && publisher.isNotBlank()) {
+            return jdbcTemplate.query("$query WHERE name like ? AND author like ? AND publisher like ?",
+                    rowMapper, "%$name%", "%$author%", "%$publisher%")
+        } else {
+            return jdbcTemplate.query(query, rowMapper)
+        }
+    }
+
 }

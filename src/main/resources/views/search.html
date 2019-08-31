@@ -2,18 +2,23 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>書籍管理</title>
+    <title>書籍検索</title>
 </head>
 <body>
-<div>
+<form th:method="post" th:action="@{./search}" >
     <div>
-        <a th:href="@{books/new}">書籍登録</a>
+        <label>
+            <span>書籍名: <input type="text" id="name" name="name" value="" /></span>
+            <span>著者名: <input type="text" id="author" name="author" value="" /></span>
+            <span>出版社: <input type="text" id="publisher" name="publisher" value="" /></span>
+        </label>
     </div>
     <div>
-        <a th:href="@{books/search}">書籍検索</a>
+        <input type="submit" value="検索" />
     </div>
-</div>
-<!--<p th:if="${books.isEmpty()}">書籍の登録はありません。</p>-->
+</form>
+
+<p th:if="${books.isEmpty()}">検索結果はありません。</p>
 <ul th:unless="${books.isEmpty()}">
     <li th:each="book:${books}">
         <a th:href="@{books/{id}/edit(id=${book.id})}">
