@@ -11,4 +11,6 @@ interface BookRepository {
     fun findAll(): List<Book>
 
     fun findById(id: Long): Book?
+
+    fun search(name: String, author: String, publisher: String): List<Book>
 }

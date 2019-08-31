@@ -5,15 +5,19 @@
     <title>書籍変更</title>
 </head>
 <body>
-<form th:method="post" th:action="@{./}" th:object="${bookForm}" >
+<form th:method="post" th:action="@{./}" >
     <div>
         <label>
-            <!--書籍名: <input type="text" th:field="*{name}" />-->
-            書籍名: <input type="text" id="name" name="name" th:value="${bookForm.name}" />
-            著者名: <input type="text" id="author" name="author" th:value="${bookForm.author}" />
-            出版社: <input type="text" id="publisher" name="publisher" th:value="${bookForm.publisher}" />
+            <div>
+                書籍名: <input type="text" id="name" name="name" th:value="${bookForm.name}" size="50" />50文字以内
+            </div>
+            <div>
+                著者名: <input type="text" id="author" name="author" th:value="${bookForm.author}" size="50"/>50文字以内
+            </div>
+            <div>
+                出版社: <input type="text" id="publisher" name="publisher" th:value="${bookForm.publisher}" size="50"/>50文字以内
+            </div>
         </label>
-        <!--<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">エラーメッセージ</p>-->
     </div>
     <div>
         <input type="submit" value="更新" />
