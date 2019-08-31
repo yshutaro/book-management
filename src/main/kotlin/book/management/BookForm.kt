@@ -1,7 +1,7 @@
 package book.management
 
 import javax.inject.Singleton
-import org.hibernate.validator.constraints.NotBlank
+import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
 @Singleton
