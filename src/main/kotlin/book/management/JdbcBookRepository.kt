@@ -25,10 +25,10 @@ class JdbcBookRepository(private val jdbcTemplate: JdbcTemplate) : BookRepositor
         get() = books.map(Book::id).max() ?:0
 
     override fun create(name: String, author: String, publisher: String): Book {
-        val id = maxId + 1
-        val book = Book(id, name, author, publisher)
-        books += book
-        return book
+        jdbcTemplate.update("INSERT INTO books(name, author, publisher) VALUES(?, ?, ?)",
+                name, author, publisher)
+        val id = jdbcTemplate.queryForObject("SELECT last_insert_rowid()", Integer::class.java).toLong()
+        return Book(id, name, author, publisher)
     }
 
     override fun update(book: Book) {
@@ -47,7 +47,6 @@ class JdbcBookRepository(private val jdbcTemplate: JdbcTemplate) : BookRepositor
     @Transactional
     override fun findAll(): List<Book> =
             jdbcTemplate.query("SELECT id, name, author, publisher FROM books", rowMapper)
-//    override fun findAll(): List<Book> = books.toList()
 
     override fun findById(id: Long): Book? = books.find { it.id == id }
 
