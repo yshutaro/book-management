@@ -3,10 +3,8 @@ package book.management
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
-import io.micronaut.http.annotation.Patch
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.PathVariable
-import io.micronaut.http.HttpStatus
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.views.View
@@ -17,12 +15,19 @@ import javax.validation.Valid
 @Controller("/books")
 class BooksController(private val bookRepository: BookRepository) {
 
-//    @View("index")
-//    @Get("/")
-//    fun index(): HttpResponse<Map<String, List<Book>>> {
-//        val books = bookRepository.findAll()
-//        return HttpResponse.ok(mapOf("books" to books))
-//    }
+    @View("index")
+    @Get("/")
+    fun index(): HttpResponse<Map<String, List<Book>>> {
+        val books = listOf<Book>()
+        return HttpResponse.ok(mapOf("books" to books))
+    }
+
+    @View("index")
+    @Post("/", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
+    fun searchbooks(@Body form:BookForm): HttpResponse<Map<String, List<Book>>> {
+        val books = bookRepository.search(form.name ?: "", form.author ?: "", form.publisher ?: "")
+        return HttpResponse.ok(mapOf("books" to books))
+    }
 
     @View("new")
     @Get("new")
@@ -53,7 +58,7 @@ class BooksController(private val bookRepository: BookRepository) {
         return HttpResponse.ok(mapOf("bookForm" to form))
     }
 
-//    @Patch("{id}")
+    // TODO  可能なら @Patch("{id}")　にする
     @Post("{id}", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
     fun update(@PathVariable("id") id:Long, @Body @Valid form:BookForm): HttpResponse<String> {
         val book = bookRepository.findById(id) ?: throw NotFoundException()
@@ -72,20 +77,6 @@ class BooksController(private val bookRepository: BookRepository) {
         bookRepository.delete(book.id)
         val location = java.net.URI("/books")
         return HttpResponse.redirect(location)
-    }
-
-    @View("index")
-    @Get("/")
-    fun index(): HttpResponse<Map<String, List<Book>>> {
-        val books = listOf<Book>()
-        return HttpResponse.ok(mapOf("books" to books))
-    }
-
-    @View("index")
-    @Post("/", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
-    fun searchbooks(@Body form:BookForm): HttpResponse<Map<String, List<Book>>> {
-        val books = bookRepository.search(form.name ?: "", form.author ?: "", form.publisher ?: "")
-        return HttpResponse.ok(mapOf("books" to books))
     }
 
 }
