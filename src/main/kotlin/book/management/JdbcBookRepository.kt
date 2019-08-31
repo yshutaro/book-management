@@ -3,16 +3,12 @@ package book.management
 import io.micronaut.context.annotation.Requires
 import javax.inject.Singleton
 import org.springframework.jdbc.core.JdbcTemplate
-import book.management.service.TestService
 import org.springframework.jdbc.core.RowMapper
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
-import org.springframework.stereotype.Repository
-import javax.inject.Inject
+import org.springframework.transaction.annotation.Transactional
 
-//class JdbcBookRepository(private val jdbcTemplate: JdbcTemplate) : BookRepository {
-//@Repository
 @Singleton
-class JdbcBookRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) : BookRepository {
+@Requires(beans = [JdbcTemplate::class])
+class JdbcBookRepository(private val jdbcTemplate: JdbcTemplate) : BookRepository {
 
     private val rowMapper = RowMapper<Book> { rs, _ ->
         Book(
@@ -48,6 +44,7 @@ class JdbcBookRepository(private val jdbcTemplate: NamedParameterJdbcTemplate) :
         }
     }
 
+    @Transactional
     override fun findAll(): List<Book> =
             jdbcTemplate.query("SELECT id, name, author, publisher FROM books", rowMapper)
 //    override fun findAll(): List<Book> = books.toList()

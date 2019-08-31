@@ -10,10 +10,10 @@ micronaut:
 #          username: ${JDBC_USER:sa}
 #          password: ${JDBC_PASSWORD:""}
 #          driverClassName: ${JDBC_DRIVER:org.h2.Driver}
-  datasources:
-      default:
-          url: jdbc:sqlite:book.db
-          driverClassName: org.sqlite.JDBC
+datasources:
+    default:
+        url: jdbc:sqlite:book.db
+        driverClassName: org.sqlite.JDBC
 #  jpa:
 #      default:
 #          packages-to-scan:

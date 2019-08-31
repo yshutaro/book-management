@@ -11,12 +11,14 @@ import javax.sql.DataSource
 
 @Factory
 class JdbcTemplateFactory {
+
     @Inject
-    private var dataSource: DataSource? = null
+//    var dataSource: DataSource? = null
+    lateinit var dataSource: DataSource
 
     @Bean
     @Singleton
-    internal fun jdbcTemplate(): JdbcTemplate {
+    fun jdbcTemplate(): JdbcTemplate {
         return JdbcTemplate(dataSource)
     }
 }
