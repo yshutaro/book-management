@@ -7,7 +7,17 @@ cd book-management
 
 ## Database
 
-```aidl
-sqlite3 book.db
-sqlite> CREATE TABLE books(id INTEGER PRIMARY KEY, name TEXT NOT NULL, author TEXT NOT NULL, publisher TEXT NOT NULL);
+sqlite3を使います。
+`book.db`
+
 ```
+sqlite3 book.db
+sqlite> CREATE TABLE books(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name TEXT NOT NULL,
+	author TEXT NOT NULL,
+	publisher TEXT NOT NULL
+);
+```
+
+http://localhost:8080/books

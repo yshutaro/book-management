@@ -19,11 +19,7 @@ class JdbcBookRepository(private val jdbcTemplate: JdbcTemplate) : BookRepositor
                 )
     }
 
-    private val books: MutableList<Book> = mutableListOf()
-
-    private val maxId: Long
-        get() = books.map(Book::id).max() ?:0
-
+    @Transactional
     override fun create(name: String, author: String, publisher: String): Book {
         jdbcTemplate.update("INSERT INTO books(name, author, publisher) VALUES(?, ?, ?)",
                 name, author, publisher)
@@ -31,23 +27,22 @@ class JdbcBookRepository(private val jdbcTemplate: JdbcTemplate) : BookRepositor
         return Book(id, name, author, publisher)
     }
 
+    @Transactional
     override fun update(book: Book) {
-        books.replaceAll { t ->
-            if (t.id == book.id) book
-            else t
-        }
-    }
-
-    override fun delete(id: Long) {
-        books.toList().forEach {
-            if (it.id == id) books.remove(it)
-        }
+        jdbcTemplate.update("UPDATE books SET name = ?, author = ?, publisher = ? WHERE id = ?",
+                book.name, book.author, book.publisher, book.id)
     }
 
     @Transactional
+    override fun delete(id: Long) {
+        jdbcTemplate.update("DELETE from books WHERE id = ?", id)
+    }
+
     override fun findAll(): List<Book> =
             jdbcTemplate.query("SELECT id, name, author, publisher FROM books", rowMapper)
 
-    override fun findById(id: Long): Book? = books.find { it.id == id }
+    override fun findById(id: Long): Book? =
+            jdbcTemplate.query("SELECT id, name, author, publisher FROM books WHERE id = ?",
+                    rowMapper, id).firstOrNull()
 
 }
