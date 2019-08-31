@@ -3,7 +3,6 @@ package book.management.factory
 import io.micronaut.context.annotation.Factory
 import org.springframework.context.annotation.Bean
 import org.springframework.jdbc.core.JdbcTemplate
-import javax.annotation.Resource
 
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,7 +12,6 @@ import javax.sql.DataSource
 class JdbcTemplateFactory {
 
     @Inject
-//    var dataSource: DataSource? = null
     lateinit var dataSource: DataSource
 
     @Bean
