@@ -5,6 +5,14 @@
     <title>書籍検索</title>
 </head>
 <body>
+<div>
+    <div>
+        <a th:href="@{books/new}">書籍登録</a>
+    </div>
+    <div>
+        書籍検索
+    </div>
+</div>
 <form th:method="post" th:action="@{./search}" >
     <div>
         <label>

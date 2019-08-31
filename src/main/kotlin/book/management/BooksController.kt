@@ -17,12 +17,12 @@ import javax.validation.Valid
 @Controller("/books")
 class BooksController(private val bookRepository: BookRepository) {
 
-    @View("index")
-    @Get("/")
-    fun index(): HttpResponse<Map<String, List<Book>>> {
-        val books = bookRepository.findAll()
-        return HttpResponse.ok(mapOf("books" to books))
-    }
+//    @View("index")
+//    @Get("/")
+//    fun index(): HttpResponse<Map<String, List<Book>>> {
+//        val books = bookRepository.findAll()
+//        return HttpResponse.ok(mapOf("books" to books))
+//    }
 
     @View("new")
     @Get("new")
@@ -32,7 +32,7 @@ class BooksController(private val bookRepository: BookRepository) {
         return HttpResponse.ok(mapOf("bookForm" to form))
     }
 
-    @Post("/", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
+    @Post("/create", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
     fun create(@Body @Valid form:BookForm): HttpResponse<String> {
         val name = requireNotNull(form.name)
         val author = requireNotNull(form.author)
@@ -74,21 +74,16 @@ class BooksController(private val bookRepository: BookRepository) {
         return HttpResponse.redirect(location)
     }
 
-    @View("search")
-    @Get("/search")
-    fun search(): HttpResponse<Map<String, List<Book>>> {
+    @View("index")
+    @Get("/")
+    fun index(): HttpResponse<Map<String, List<Book>>> {
         val books = listOf<Book>()
         return HttpResponse.ok(mapOf("books" to books))
     }
 
-    @View("search")
-    @Post("/search", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
+    @View("index")
+    @Post("/", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
     fun searchbooks(@Body form:BookForm): HttpResponse<Map<String, List<Book>>> {
-
-        print("form.name :" + form.name)
-        print("form.author :" + form.author)
-        print("form.publisher :" + form.publisher)
-
         val books = bookRepository.search(form.name ?: "", form.author ?: "", form.publisher ?: "")
         return HttpResponse.ok(mapOf("books" to books))
     }
