@@ -8,11 +8,10 @@
 <form th:method="post" th:action="@{./create}" th:object="${bookForm}" >
     <div>
         <label>
-            <div>書籍名: <input type="text" id="name" name="name" size="50" />50文字以内</div>
-            <div>著者名: <input type="text" id="author" name="author" size="50" />50文字以内</div>
-            <div>出版社: <input type="text" id="publisher" name="publisher" size="50" />50文字以内</div>
+            <div>書籍名: <input type="text" id="name" name="name" size="50" />必須。50文字以内</div>
+            <div>著者名: <input type="text" id="author" name="author" size="50" />必須。50文字以内</div>
+            <div>出版社: <input type="text" id="publisher" name="publisher" size="50" />必須。50文字以内</div>
         </label>
-        <!--<p th:if="${#fields.hasErrors('name')}" th:errors="${bookForm.name}">エラーメッセージ</p>-->
         <ul th:if="${errors}">
             エラーメッセージ
             <li th:each="${errors}">
