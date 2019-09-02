@@ -1,4 +1,6 @@
-package book.management
+package book.management.repository
+
+import book.management.Book
 
 interface BookRepository {
 

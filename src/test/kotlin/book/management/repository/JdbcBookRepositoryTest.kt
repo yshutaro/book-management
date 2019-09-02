@@ -1,4 +1,4 @@
-package book.management
+package book.management.repository
 
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe

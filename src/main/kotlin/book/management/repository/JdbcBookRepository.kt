@@ -1,5 +1,6 @@
-package book.management
+package book.management.repository
 
+import book.management.Book
 import io.micronaut.context.annotation.Requires
 import javax.inject.Singleton
 import org.springframework.jdbc.core.JdbcTemplate
@@ -16,7 +17,7 @@ class JdbcBookRepository(private val jdbcTemplate: JdbcTemplate) : BookRepositor
                 rs.getString("name"),
                 rs.getString("author"),
                 rs.getString("publisher")
-                )
+        )
     }
 
     @Transactional
