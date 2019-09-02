@@ -37,7 +37,7 @@ class BooksController(private val bookRepository: BookRepository) {
         return HttpResponse.ok(mapOf("bookForm" to form))
     }
 
-    @Post("/create", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
+    @Post("/new", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
     fun create(@Body @Valid form:BookForm): HttpResponse<String> {
         val name = requireNotNull(form.name)
         val author = requireNotNull(form.author)

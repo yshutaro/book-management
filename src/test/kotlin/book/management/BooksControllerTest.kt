@@ -28,13 +28,18 @@ class BooksControllerTest : Spek({
             client?.stop()
         }
 
-        it ("bookmagemneet top page") {
+        it ("top page") {
             val body = client?.toBlocking()?.retrieve("/books")
             assertNotNull(body)
 //            assertEquals("", body)
         }
 
-        it ("should occur an error without name") {
+        it ("new page") {
+            val body = client?.toBlocking()?.retrieve("/books/new")
+            assertNotNull(body)
+        }
+
+        it ("no page") {
             try {
                 client?.toBlocking()?.retrieve("/hello")
             }
