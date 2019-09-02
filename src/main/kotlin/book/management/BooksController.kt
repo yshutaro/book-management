@@ -18,7 +18,7 @@ class BooksController(private val bookRepository: BookRepository) {
     @View("index")
     @Get("/")
     fun index(): HttpResponse<Map<String, List<Book>>> {
-        val books = listOf<Book>()
+        val books = bookRepository.findAll()
         return HttpResponse.ok(mapOf("books" to books))
     }
 
@@ -37,7 +37,7 @@ class BooksController(private val bookRepository: BookRepository) {
         return HttpResponse.ok(mapOf("bookForm" to form))
     }
 
-    @Post("/create", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
+    @Post("/new", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
     fun create(@Body @Valid form:BookForm): HttpResponse<String> {
         val name = requireNotNull(form.name)
         val author = requireNotNull(form.author)

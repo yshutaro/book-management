@@ -5,7 +5,7 @@
     <title>書籍登録</title>
 </head>
 <body>
-<form th:method="post" th:action="@{./create}" th:object="${bookForm}" >
+<form th:method="post" th:action="@{./new}" th:object="${bookForm}" >
     <div>
         <label>
             <div>書籍名: <input type="text" id="name" name="name" size="50" />必須。50文字以内</div>
