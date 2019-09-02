@@ -18,7 +18,7 @@ class BooksController(private val bookRepository: BookRepository) {
     @View("index")
     @Get("/")
     fun index(): HttpResponse<Map<String, List<Book>>> {
-        val books = listOf<Book>()
+        val books = bookRepository.findAll()
         return HttpResponse.ok(mapOf("books" to books))
     }
 
