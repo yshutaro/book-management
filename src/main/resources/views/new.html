@@ -5,19 +5,13 @@
     <title>書籍登録</title>
 </head>
 <body>
-<form th:method="post" th:action="@{./new}" th:object="${bookForm}" >
+<form th:method="post" th:action="@{./new}" >
     <div>
         <label>
             <div>書籍名: <input type="text" id="name" name="name" size="50" />必須。50文字以内</div>
             <div>著者名: <input type="text" id="author" name="author" size="50" />必須。50文字以内</div>
             <div>出版社: <input type="text" id="publisher" name="publisher" size="50" />必須。50文字以内</div>
         </label>
-        <ul th:if="${errors}">
-            エラーメッセージ
-            <li th:each="${errors}">
-                <span th:text="${errors.message}"></span>
-            </li>
-        </ul>
     </div>
     <div>
         <input type="submit" value="登録" />
