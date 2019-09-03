@@ -41,14 +41,14 @@ dependencies {
     testImplementation "org.jetbrains.spek:spek-api:1.1.5"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
     testRuntimeOnly "org.jetbrains.spek:spek-junit-platform-engine:1.1.5"
-    testCompile "org.assertj:assertj-core:3.8.0"
+    testImplementation 'org.assertj:assertj-core:3.8.0'
     compile 'io.micronaut:micronaut-views'
     runtime 'org.thymeleaf:thymeleaf:3.0.11.RELEASE'
-    compile "io.micronaut.configuration:micronaut-hibernate-validator"
-    compile "io.micronaut.configuration:micronaut-jdbc-tomcat"
-    compile 'org.springframework:org.springframework.jdbc:3.2.2.RELEASE'
-    compile "io.micronaut:micronaut-spring"
-    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.25.2'
+    implementation "io.micronaut.configuration:micronaut-hibernate-validator"
+    implementation "io.micronaut.configuration:micronaut-jdbc-tomcat"
+    implementation 'org.springframework:org.springframework.jdbc:3.2.2.RELEASE'
+    implementation "io.micronaut:micronaut-spring"
+    implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.25.2'
 }
 
 test.classpath += configurations.developmentOnly

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.exceptions.HttpClientResponseException
+import org.assertj.core.api.Assertions.assertThat
 
 class BooksControllerTest : Spek({
 
@@ -31,12 +32,22 @@ class BooksControllerTest : Spek({
         it ("top page") {
             val body = client?.toBlocking()?.retrieve("/books")
             assertNotNull(body)
-//            assertEquals("", body)
+            //TODO 正しくテスト出来ていない？
+            assertThat(body).contains("書籍管理")
         }
 
         it ("new page") {
             val body = client?.toBlocking()?.retrieve("/books/new")
             assertNotNull(body)
+            //TODO 正しくテスト出来ていない？
+            assertThat(body).contains("書籍登録")
+        }
+
+        it ("edit page") {
+            val body = client?.toBlocking()?.retrieve("/books/[0-9].*/edit")
+            assertNotNull(body)
+            //TODO 正しくテスト出来ていない？
+            assertThat(body).contains("書籍変更")
         }
 
         it ("no page") {

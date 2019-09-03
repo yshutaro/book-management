@@ -1,10 +1,10 @@
 package book.management.repository
 
-import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import javax.inject.Inject
+import org.assertj.core.api.Assertions.assertThat
 import book.management.Book
 
 class JdbcBookRepositoryTest(@Inject var sut: JdbcBookRepository) : Spek({
