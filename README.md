@@ -8,9 +8,15 @@
 + 著者名（必須。50文字以内）
 + 出版社名（必須。50文字以内）
 
+# 言語・フレームワーク
+
++ Kotlin
++ Micronaut
++ SQLite3
+
 # 作成したバージョン
 
-## Java
+## JDK
 
 ```shell script
 java --version
@@ -26,11 +32,18 @@ sdk list | grep kotlin
 Kotlin (1.3.50) 
 ```
 
-## gradle
+## Gradle
 
 ```shell script
 sdk list | grep gradle
 Gradle (5.6.1)
+```
+
+## SQLite3
+
+```shell script
+sqlite3 -version 
+3.24.0 2018-06-04 14:10:15 
 ```
 
 # ローカル環境での起動方法
