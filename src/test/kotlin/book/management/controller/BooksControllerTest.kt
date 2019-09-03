@@ -1,4 +1,4 @@
-package book.management
+package book.management.controller
 
 import io.micronaut.context.ApplicationContext
 import io.micronaut.http.HttpStatus

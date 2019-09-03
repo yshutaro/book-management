@@ -68,6 +68,7 @@ sqlite> CREATE TABLE books(
 起動したら下記URLにアクセスします。
 
 http://localhost:8080/books
+
 ※以下トップ画面と記します。
 
 ## 書籍登録

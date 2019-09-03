@@ -1,5 +1,9 @@
-package book.management
+package book.management.controller
 
+import book.management.Book
+import book.management.BookForm
+import book.management.repository.BookRepository
+import book.management.NotFoundException
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
@@ -24,7 +28,7 @@ class BooksController(private val bookRepository: BookRepository) {
 
     @View("index")
     @Post("/", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
-    fun searchbooks(@Body form:BookForm): HttpResponse<Map<String, List<Book>>> {
+    fun searchbooks(@Body form: BookForm): HttpResponse<Map<String, List<Book>>> {
         val books = bookRepository.search(form.name ?: "", form.author ?: "", form.publisher ?: "")
         return HttpResponse.ok(mapOf("books" to books))
     }
@@ -38,7 +42,7 @@ class BooksController(private val bookRepository: BookRepository) {
     }
 
     @Post("/new", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
-    fun create(@Body @Valid form:BookForm): HttpResponse<String> {
+    fun create(@Body @Valid form: BookForm): HttpResponse<String> {
         val name = requireNotNull(form.name)
         val author = requireNotNull(form.author)
         val publisher = requireNotNull(form.publisher)
@@ -51,7 +55,7 @@ class BooksController(private val bookRepository: BookRepository) {
     @Get("{id}/edit")
     fun edit(@PathVariable("id") id: Long): HttpResponse<Map<String, BookForm>> {
         val book = bookRepository.findById(id) ?: throw NotFoundException()
-        val form = BookForm()
+        val form =BookForm()
         form.name = book.name
         form.author = book.author
         form.publisher = book.publisher
@@ -60,7 +64,7 @@ class BooksController(private val bookRepository: BookRepository) {
 
     // TODO  可能なら @Patch("{id}")　にする
     @Post("{id}", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
-    fun update(@PathVariable("id") id:Long, @Body @Valid form:BookForm): HttpResponse<String> {
+    fun update(@PathVariable("id") id:Long, @Body @Valid form: BookForm): HttpResponse<String> {
         val book = bookRepository.findById(id) ?: throw NotFoundException()
 
         val newBook = book.copy(name = requireNotNull(form.name),
