@@ -22,9 +22,10 @@ class BooksController(private val bookRepository: BookRepository) {
 
     @View("index")
     @Get("/")
-    fun index(): HttpResponse<Map<String, List<Book>>> {
+    fun index(): HttpResponse<Map<String, Any>> {
         val books = listOf<Book>()
-        return HttpResponse.ok(mapOf("books" to books))
+        val form = BookForm()
+        return HttpResponse.ok(mapOf("books" to books, "bookForm" to form))
     }
 
     @View("index")
