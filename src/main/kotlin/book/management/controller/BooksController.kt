@@ -4,8 +4,8 @@ import book.management.Book
 import book.management.BookForm
 import book.management.repository.BookRepository
 import io.micronaut.http.HttpResponse
-import io.micronaut.http.MediaType
 import io.micronaut.views.View
+import io.micronaut.http.MediaType
 import io.micronaut.validation.Validated
 import javax.validation.Valid
 import io.micronaut.http.HttpStatus
@@ -27,8 +27,9 @@ class BooksController(private val bookRepository: BookRepository) {
         return HttpResponse.ok(mapOf("books" to books))
     }
 
-    @View("index")
-    @Post("/", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
+//    @View("index")
+    @Post("/")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     fun searchbooks(@Body form: BookForm): HttpResponse<Map<String, List<Book>>> {
         val books = bookRepository.search(form.name ?: "", form.author ?: "", form.publisher ?: "")
         return HttpResponse.ok(mapOf("books" to books))
@@ -44,13 +45,12 @@ class BooksController(private val bookRepository: BookRepository) {
 
     @Post("/new")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    fun create(@Valid @Body form: BookForm): HttpResponse<String> {
+    fun create(@Valid @Body form: BookForm): HttpResponse<Map<String, Book>> {
         val name = requireNotNull(form.name)
         val author = requireNotNull(form.author)
         val publisher = requireNotNull(form.publisher)
-        bookRepository.create(name, author, publisher)
-        val location = java.net.URI("/books")
-        return HttpResponse.redirect(location)
+        val book = bookRepository.create(name, author, publisher)
+        return HttpResponse.ok(mapOf("book" to book))
     }
 
     @View("edit")
