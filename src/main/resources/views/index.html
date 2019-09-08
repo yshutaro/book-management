@@ -36,6 +36,7 @@
 <ul th:unless="${books.isEmpty()}">
     <table border="1">
         <tr>
+            <th>登録番号</th>
             <th>書籍名</th>
             <th>著者名</th>
             <th>出版社</th>
@@ -44,8 +45,11 @@
         <tr th:each="book:${books}">
             <td>
                 <a th:href="@{books/{id}/edit(id=${book.id})}">
-                    <span th:text="${book.name}"></span>
+                    <span th:text="${book.id}"></span>
                 </a>
+            </td>
+            <td>
+                <span th:text="${book.name}"></span>
             </td>
             <td>
                 <span th:text="${book.author}"></span>
