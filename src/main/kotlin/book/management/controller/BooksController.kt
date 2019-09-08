@@ -3,21 +3,22 @@ package book.management.controller
 import book.management.Book
 import book.management.BookForm
 import book.management.repository.BookRepository
-import book.management.NotFoundException
-import io.micronaut.http.annotation.Controller
-import io.micronaut.http.annotation.Get
-import io.micronaut.http.annotation.Post
-import io.micronaut.http.annotation.Body
-import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
 import io.micronaut.views.View
 import io.micronaut.validation.Validated
 import javax.validation.Valid
+import io.micronaut.http.HttpStatus
+import io.micronaut.http.annotation.*
+
 
 @Validated
 @Controller("/books")
 class BooksController(private val bookRepository: BookRepository) {
+
+    @View("not_found")
+    @Error(status = HttpStatus.NOT_FOUND, global = true)
+    fun notFound() {}
 
     @View("index")
     @Get("/")
@@ -41,8 +42,9 @@ class BooksController(private val bookRepository: BookRepository) {
         return HttpResponse.ok(mapOf("bookForm" to form))
     }
 
-    @Post("/new", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
-    fun create(@Body @Valid form: BookForm): HttpResponse<String> {
+    @Post("/new")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    fun create(@Valid @Body form: BookForm): HttpResponse<String> {
         val name = requireNotNull(form.name)
         val author = requireNotNull(form.author)
         val publisher = requireNotNull(form.publisher)
@@ -54,7 +56,7 @@ class BooksController(private val bookRepository: BookRepository) {
     @View("edit")
     @Get("{id}/edit")
     fun edit(@PathVariable("id") id: Long): HttpResponse<Map<String, BookForm>> {
-        val book = bookRepository.findById(id) ?: throw NotFoundException()
+        val book = bookRepository.findById(id) ?: return HttpResponse.notFound()
         val form =BookForm()
         form.name = book.name
         form.author = book.author
@@ -65,7 +67,7 @@ class BooksController(private val bookRepository: BookRepository) {
     // TODO  可能なら @Patch("{id}")　にする
     @Post("{id}", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
     fun update(@PathVariable("id") id:Long, @Body @Valid form: BookForm): HttpResponse<String> {
-        val book = bookRepository.findById(id) ?: throw NotFoundException()
+        val book = bookRepository.findById(id) ?: return HttpResponse.notFound()
 
         val newBook = book.copy(name = requireNotNull(form.name),
                                 author = requireNotNull(form.author),
@@ -77,7 +79,7 @@ class BooksController(private val bookRepository: BookRepository) {
 
     @Get("{id}/delete")
     fun delete(@PathVariable("id") id: Long): HttpResponse<String> {
-        val book = bookRepository.findById(id) ?: throw NotFoundException()
+        val book = bookRepository.findById(id) ?: return HttpResponse.notFound()
         bookRepository.delete(book.id)
         val location = java.net.URI("/books")
         return HttpResponse.redirect(location)
