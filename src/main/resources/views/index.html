@@ -16,13 +16,13 @@
 <form th:method="post" th:action="@{/books}" >
     <div>
         <div>
-            書籍名: <input type="text" id="name" name="name" size="50" value="" />
+            書籍名: <input type="text" id="name" name="name" size="50" th:value="${bookForm.name}" />
         </div>
         <div>
-            著者名: <input type="text" id="author" name="author" size="50" value="" />
+            著者名: <input type="text" id="author" name="author" size="50" th:value="${bookForm.author}" />
         </div>
         <div>
-            出版社: <input type="text" id="publisher" name="publisher" size="50" value="" />
+            出版社: <input type="text" id="publisher" name="publisher" size="50" th:value="${bookForm.publisher}" />
         </div>
     </div>
     <div>

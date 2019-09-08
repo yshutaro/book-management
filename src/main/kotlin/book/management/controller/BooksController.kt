@@ -30,9 +30,9 @@ class BooksController(private val bookRepository: BookRepository) {
     @View("index")
     @Post("/")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    fun searchbooks(@Body form: BookForm): HttpResponse<Map<String, List<Book>>> {
+    fun searchbooks(@Body form: BookForm): HttpResponse<Map<String, Any>> {
         val books = bookRepository.search(form.name ?: "", form.author ?: "", form.publisher ?: "")
-        return HttpResponse.ok(mapOf("books" to books))
+        return HttpResponse.ok(mapOf("books" to books, "bookForm" to form))
     }
 
     @View("new")
