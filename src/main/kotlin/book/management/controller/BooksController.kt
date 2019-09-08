@@ -23,11 +23,11 @@ class BooksController(private val bookRepository: BookRepository) {
     @View("index")
     @Get("/")
     fun index(): HttpResponse<Map<String, List<Book>>> {
-        val books = bookRepository.findAll()
+        val books = listOf<Book>()
         return HttpResponse.ok(mapOf("books" to books))
     }
 
-//    @View("index")
+    @View("index")
     @Post("/")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     fun searchbooks(@Body form: BookForm): HttpResponse<Map<String, List<Book>>> {
@@ -64,25 +64,23 @@ class BooksController(private val bookRepository: BookRepository) {
         return HttpResponse.ok(mapOf("bookForm" to form))
     }
 
-    // TODO  可能なら @Patch("{id}")　にする
-    @Post("{id}", consumes = [MediaType.APPLICATION_FORM_URLENCODED])
-    fun update(@PathVariable("id") id:Long, @Body @Valid form: BookForm): HttpResponse<String> {
+    @Patch("{id}")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    fun update(@PathVariable("id") id:Long, @Body @Valid form: BookForm): HttpResponse<Map<String, Book>> {
         val book = bookRepository.findById(id) ?: return HttpResponse.notFound()
-
         val newBook = book.copy(name = requireNotNull(form.name),
                                 author = requireNotNull(form.author),
                                 publisher = requireNotNull(form.publisher))
         bookRepository.update(newBook)
-        val location = java.net.URI("/books")
-        return HttpResponse.redirect(location)
+        return HttpResponse.ok(mapOf("book" to newBook))
     }
 
+    @View("deleted")
     @Get("{id}/delete")
-    fun delete(@PathVariable("id") id: Long): HttpResponse<String> {
+    fun delete(@PathVariable("id") id: Long): HttpResponse<Map<String, Book>> {
         val book = bookRepository.findById(id) ?: return HttpResponse.notFound()
         bookRepository.delete(book.id)
-        val location = java.net.URI("/books")
-        return HttpResponse.redirect(location)
+        return HttpResponse.ok(mapOf("book" to book))
     }
 
 }
