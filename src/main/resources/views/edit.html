@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>書籍変更</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </head>
 <body>
 <form th:method="post" th:action="@{./}" >
@@ -20,9 +21,67 @@
         </label>
     </div>
     <div>
-        <input type="submit" value="更新" />
+        <input type="button" id="editBookBtn" value="更新" />
     </div>
 </form>
 <a href="/books">トップ画面へ</a>
+<div class="result"></div>
+<script type="text/javascript">
+$(function(){
+    $('#editBookBtn').on('click',function(){
+        $('.result').html('');
+        $.ajax({
+            url:'./',
+            type:'PATCH',
+            data:{
+                'name':$('#name').val(),
+                'author':$('#author').val(),
+                'publisher':$('#publisher').val()
+            }
+        })
+        .done( (data) => {
+            console.log(data);
+            let msg = '更新しました。'
+                     + '<br>'
+                     + '番号：' + data.book.id
+                     + '<br>'
+                     + '書籍名：' + data.book.name
+                     + '<br>'
+                     + '著者名：' + data.book.author
+                     + '<br>'
+                     + '出版社名：' + data.book.publisher
+                     ;
+            $('.result').html(msg);
+        })
+        .fail( (data, status, xhr) => {
+            console.log(xhr);
+            console.log(status);
+            console.log(data);
+            // メッセージの個数でresponseJSONの形式が違うので判定する。
+            if(data.responseJSON._embedded) {
+                let msg1 = '更新に失敗しました。';
+                let errors =  data.responseJSON._embedded.errors;
+                console.log(errors);
+                let msg2 = '';
+                errors.forEach(function(error){
+                    msg2 = msg2 + '<br>' + error.message
+                });
+                let msg = msg1 + msg2;
+                $('.result').html(msg);
+            } else {
+                var msg = '更新に失敗しました。';
+                var msg = msg
+                        + '<br>'
+                        + data.responseJSON.message;
+                console.log(msg);
+                $('.result').html(msg);
+            }
+        })
+        .always( (data) => {
+            //nothing
+        });
+    });
+});
+</script>
 </body>
 </html>
