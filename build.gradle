@@ -56,7 +56,9 @@ test.classpath += configurations.developmentOnly
 mainClassName = "book.management.Application"
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        includeEngines 'spek'
+    }
 }
 
 allOpen {
