@@ -42,6 +42,7 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
     testRuntimeOnly "org.jetbrains.spek:spek-junit-platform-engine:1.1.5"
     testImplementation 'org.assertj:assertj-core:3.8.0'
+    testImplementation "io.micronaut.test:micronaut-test-spock:1.1.1"
     compile 'io.micronaut:micronaut-views'
     runtime 'org.thymeleaf:thymeleaf:3.0.11.RELEASE'
     implementation "io.micronaut.configuration:micronaut-hibernate-validator"
